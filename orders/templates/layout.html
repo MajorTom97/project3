@@ -25,9 +25,11 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Features</a>
       </li>
+      {% if user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
+        <a class="nav-link" href="#">{{user.username}}</a>
       </li>
+      {% endif%}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false">
           {{username}}
@@ -35,14 +37,14 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="#">Orders</a>
           <a class="dropdown-item" href="#">Settings</a>
-          <a class="dropdown-item" href="#">Sign out</a>
+          <a class="dropdown-item" href="{% url 'signout' %}">Sign out</a>
         </div>
       </li>
       <div class="navbar-end">
         <div class="navbar-item">
             <div class="buttons">
                 <button type="button" class="btn btn-danger"><strong><i class="fa fa-paper-plane-o" aria-hidden="true"></i>Feedback!</strong></button>
-                <button type="button" class="btn btn-success"><strong><i class="fa fa-diamond" aria-hidden="true"></i>Premium</strong></button>
+                <button type="button" class="btn btn-success"><strong><i class="fa fa-diamond" aria-hidden="true"></i>Contact us!</strong></button>
             </div>
         </div>
         </div>
@@ -52,7 +54,7 @@
 </nav>
 {% block content%} {% endblock %}
     <footer class="copyright text-center bg-warning">
-            <p>Flack 2021</p>
+            <p>Pinocchio's Pizza and Subs</p>
             <p>Find us!</p>
             <i class='fab fa-linkedin' style='font-size:36px'></i>
             <i class='fab fa-reddit' style='font-size:36px'></i>

@@ -2,12 +2,12 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models.base import Model
 from django.forms import fields
-from django.contrib.models import User
+from django.contrib.auth.models import User
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
-    password = forms.CharField("12345", max_length=10, required=True, label="Introduce a password", widget=forms.PasswordInput)
-    password_confirmation = forms.CharField("12345", max_length=10, required=True, label="Repeat the password", widget=forms.PasswordInput)
+    password = forms.CharField(max_length=10, required=True, label="Introduce a password", widget=forms.PasswordInput)
+    password_confirmation = forms.CharField(max_length=10, required=True, label="Repeat the password", widget=forms.PasswordInput)
 
 class Meta:
     Model = User
