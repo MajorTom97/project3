@@ -6,10 +6,10 @@ from django.contrib.auth.models import User
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
-    password = forms.CharField(max_length=10, required=True, label="Introduce a password", widget=forms.PasswordInput)
-    password_confirmation = forms.CharField(max_length=10, required=True, label="Repeat the password", widget=forms.PasswordInput)
+    password1 = forms.CharField(max_length=10, required=True, label="Introduce a password", widget=forms.PasswordInput)
+    password2= forms.CharField(max_length=10, required=True, label="Repeat the password", widget=forms.PasswordInput)
 
-class Meta:
-    Model = User
-    fields = {"username", "email", "password", "password_confirmation"}
-    help_texts = {k:"" for k in fields}
+    class Meta:
+        Model = User
+        fields = {"username", "email", "password1", "password2"}
+        # help_texts = {k:"" for k in fields}
