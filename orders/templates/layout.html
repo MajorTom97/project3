@@ -27,7 +27,7 @@
       </li>
       {% if user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link" href="#">{{user.username}}</a>
+        <a class="nav-link" href="#">Hello, {{user.username}}</a>
       </li>
       {% endif%}
       <li class="nav-item dropdown">
@@ -37,7 +37,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="#">Orders</a>
           <a class="dropdown-item" href="#">Settings</a>
-          <a class="dropdown-item" href="{% url 'signout' %}">Sign out</a>
+          <span><a class="dropdown-item" href="{% url 'signoutUser' %}">Sign out</a></span>
         </div>
       </li>
       <div class="navbar-end">

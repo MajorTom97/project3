@@ -13,7 +13,7 @@ Sign in
 .card-img-left {
   width: 45%;
   /* Link to your background image using in the property below! */
-  background: scroll center url('https://source.unsplash.com/WEQbe2jBg40/414x512');
+  background: scroll center url('https://images.search.yahoo.com/search/images;?p=pizzas%20image#id=60&iurl=http%3A%2F%2Fcontenthandler.azureedge.net%2Frecp%2F426%2F2000%2F0%2F387.jpg&action=click');
   background-size: cover;
 }
 
@@ -49,17 +49,24 @@ Sign in
             {% csrf_token %}
 
               <div class="form-floating mb-3">
+                <label for="floatingInputUsername">Username</label>
                 <input type="text" class="form-control" id="floatingInputUsername" placeholder="myusername" required autofocus>
-                <label for="floatingInputUsername">Username:{{form.username}}</label>
               </div>
 
               <div class="form-floating mb-3">
-                
+                <label for="floatingInputEmail">Password</label>
                 <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingInputEmail">Password:{{form.password1}}</label>
               </div>
+
+              <div class="d-grid mb-2">
+                <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Sign in</button>
+              </div>
+
             </form>
         </div>
+        {% for message in messages %}
+          <li>messages</li>
+        {% endfor %}
     </div>
     </div>
 </body>    
