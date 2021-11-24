@@ -46,8 +46,9 @@ def register(request):
             if form.is_valid():
                 form.save()
                 username = form.cleaned_data['username']
+                print(username)
                 messages.success(request, f'User {username} successfully registered')
-                return redirect('register')
+                return render(request, 'register.html')
         else:
             form = UserCreationForm()
     

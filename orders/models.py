@@ -7,18 +7,62 @@ class Category(models.Model):
     def __str__(self):
         return f"Category Added {self.categories}"
 
-class Pizzas(models.Model):
-    pizza = models.CharField(max_length=20)
-
-    def __str__(self):
-        return f"You have choosed{self.pizza}"
-
 class Toppings(models.Model):
     topping = models.CharField(max_length=20)
 
     def __str__(self):
         return f"Added {self.topping}"
 
+class RegularPizza(models.Model):
+    pizza = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="regularPrice")
+    small = models.DecimalField(max_digits=5, decimal_places=2)
+    large = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return f"Regular {self.pizza} - Small:{self.small} Large:{self.large}"
+
+class SicilianPizza(models.Model):
+    pizza = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="sicilianPrice")
+    small = models.DecimalField(max_digits=5, decimal_places=2)
+    large = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return f"Sicilian {self.pizza} - Small:{self.small} Large:{self.large}"
+
+class Extras(models.Model):
+    addition = models.CharField(max_length=40)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.addition}"
+
+class Pastas(models.Model):
+    pasta = models.CharField(max_length=30)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.pasta} - Price:{self.price}"
+
+class Salads(models.Model):
+    salad = models.CharField(max_length=30)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.salad} - Price:{self.price}"
 class DinnerPlatters(models.Model):
-    name = models.CharField(max_length=20)
-    category = models.ForeignKey
+    dinner = models.CharField(max_length=20)
+    small = models.DecimalField(max_digits=5, decimal_places=2)
+    large = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.dinner} - Small:{self.small} - Large:{self.large}"
+
+class Subs(models.Model):
+    sub = models.CharField(max_length=30)
+    small = models.DecimalField(max_digits=5, decimal_places=2)
+    large = models.DecimalField(max_digits=5, decimal_places=2)
+    extras = models.ManyToManyField(Extras, related_name="subs", blank=True)
+
+    def __str__(self):
+        return f"Sub {self.sub} - Small:{self.small} - Large:{self.large}"
+
