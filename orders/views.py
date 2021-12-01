@@ -6,6 +6,8 @@ from django.urls import reverse
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
+from orders.models import RegularPizza, SicilianPizza, Toppings, Subs, Pastas, Salads, Extras, Category, DinnerPlatters
 from .forms import CreateUserForm
 
 # Create your views here.
@@ -36,7 +38,7 @@ def singin(request):
 def signoutUser(request):
     logout(request)
     messages.success(request, 'Come back soon!')
-    return render(request,'signin.html')
+    return HttpResponse
 
 def register(request):
     if request.user.is_authenticated:
@@ -55,3 +57,41 @@ def register(request):
 
         context = {'form': form}
         return render(request, "register.html", context)  
+
+def Category(request):
+    reg_pizza = RegularPizza.objects.all()
+    sici_pizza = SicilianPizza.objects.all()
+    toppings = Toppings.objects.all()
+
+    context = {
+        "reg_pizzas":reg_pizza,
+        "sici_pizza": sici_pizza,
+        "toppinngs": toppings
+    }
+
+    return render(request,"menu.html", context)
+
+def subs(request):
+    subs = Subs.objects.all()
+    extras = Extras.objects.all()
+    context = {
+        "subs": subs,
+        "extras": extras
+    }
+
+    return render(request, "menu.html", context)
+
+def pasta(request):
+    pasta = Pastas.objects.all()
+    return render(request, "menu.html", {"pasta":pasta})
+
+def salads(request):
+    salads = Salads.objects.all()
+    return render (request, "menu.html", {"salads":salads})
+
+def dinnerPlatters(request):
+    platters = DinnerPlatters.objects.all()
+    context = {
+        "platters":platters
+    }
+    return render(request, "menu.html", context)

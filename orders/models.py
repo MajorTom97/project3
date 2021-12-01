@@ -39,6 +39,7 @@ class SicilianPizza(models.Model):
 
     class Meta:
         verbose_name_plural="SicilianPizza"
+
 class Extras(models.Model):
     addition = models.CharField(max_length=40)
     price = models.DecimalField(max_digits=5, decimal_places=2)
@@ -77,10 +78,10 @@ class DinnerPlatters(models.Model):
         verbose_name_plural="DinnerPlatters"
 class Subs(models.Model):
     sub = models.CharField(max_length=30)
-    small = models.DecimalField(max_digits=5, decimal_places=2)
+    small = models.DecimalField(max_digits=5, decimal_places=2, blank=True)
     large = models.DecimalField(max_digits=5, decimal_places=2)
     extras = models.ManyToManyField(Extras, related_name="subs", blank=True)
-
+    
     def __str__(self):
         return f"Sub {self.sub} - Small:{self.small} - Large:{self.large}"
     class Meta:
