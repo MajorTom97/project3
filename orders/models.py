@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.deletion import CASCADE
 
 # Create your models here.
 
@@ -23,6 +25,7 @@ class RegularPizza(models.Model):
     pizza = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="regularPrice")
     small = models.DecimalField(max_digits=5, decimal_places=2)
     large = models.DecimalField(max_digits=5, decimal_places=2)
+    max_toppings = models.IntegerField(default=0)
 
     def __str__(self):
         return f"Regular {self.pizza} - Small:{self.small} Large:{self.large}"
@@ -33,6 +36,7 @@ class SicilianPizza(models.Model):
     pizza = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="sicilianPrice")
     small = models.DecimalField(max_digits=5, decimal_places=2)
     large = models.DecimalField(max_digits=5, decimal_places=2)
+    max_toppings = models.IntegerField(default=0)
 
     def __str__(self):
         return f"Sicilian {self.pizza} - Small:{self.small} Large:{self.large}"
@@ -80,9 +84,23 @@ class Subs(models.Model):
     sub = models.CharField(max_length=30)
     small = models.DecimalField(max_digits=5, decimal_places=2, blank=True)
     large = models.DecimalField(max_digits=5, decimal_places=2)
-    extras = models.ManyToManyField(Extras, related_name="subs", blank=True)
+    max_toppings = models.IntegerField(default=3)
     
     def __str__(self):
         return f"Sub {self.sub} - Small:{self.small} - Large:{self.large}"
     class Meta:
         verbose_name_plural="Subs"
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=CASCADE, related_name="orders")
+    total = models.FloatField()
+    pending = models.BooleanField(default=True)
+    date = models.DateField(auto_now_add=True)
+    
+class OrderDetail(models.Model):
+    order = models.ForeignKey(Order, on_delete=CASCADE, related_name="details")
+    product = models.CharField(max_length = 200)
+    quantity = models.IntegerField()
+    price = models.FloatField()
+    subtotal = models.FloatField()
+    toppings = models.ManyToManyField(Toppings)

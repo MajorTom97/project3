@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% load crispy_forms_tags %}
 
 {% block title %}
 Register
@@ -44,28 +45,11 @@ Register
           </div>
           <div class="card-body p-4 p-sm-5">
             <h5 class="card-title text-center mb-5 fw-light fs-5">Register</h5>
-            <form method="POST", action="">
+            <form class="form" method="POST", action="">
+
+              {% csrf_token %}
+              {{ form }}
             
-            {% csrf_token %}
-
-              <div class="form-floating mb-3">
-                {{form.username}}  
-              </div>
-
-              <div class="form-floating mb-3">
-                {{form.email}}
-              </div>
-
-              <hr>
-
-              <div class="form-floating mb-3">
-                {{form.password1}}
-              </div>
-
-              <div class="form-floating mb-3">
-                {{form.password2}}
-              </div>
-
               <div class="d-grid mb-2">
                 <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Register</button>
               </div>
@@ -93,19 +77,6 @@ Register
     </div>
   </div>
 
-  <script>
-		//Query All input fields
-		var form_fields = document.getElementsByTagName('input')
-		form_fields[1].placeholder='Username';
-		form_fields[2].placeholder='Email';
-		form_fields[3].placeholder='Enter password';
-		form_fields[4].placeholder='Confirm Password';
-
-
-		for (var field in form_fields){	
-			form_fields[field].className += 'form-floating mb-3'
-		}
-    </script>
 
 </body>
 

@@ -6,62 +6,214 @@ Menu
 
 {% block content %}
 <div class="container">
-    <div class="row row-cols-4 no-gutters">
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Regular Pizza</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <!-- Button trigger modal -->
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
-                Order
-            </button>
-            
-            <!-- Modal Pizza Regular-->
-            <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                            <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
-                        </div>
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                            <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
-                        </div>
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                            <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
-                        </div>
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                            <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
-                        </div>
+  <div class="row">
+    <div class="col-3">
+      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <a class="nav-link active" id="v-pills-regular-tab" data-toggle="pill" href="#v-pills-regular" role="tab" aria-controls="v-pills-regular" aria-selected="true">regular</a>
+        <a class="nav-link" id="v-pills-sicilian-tab" data-toggle="pill" href="#v-pills-sicilian" role="tab" aria-controls="v-pills-sicilian" aria-selected="false">sicilian</a>
+        <a class="nav-link" id="v-pills-subs-tab" data-toggle="pill" href="#v-pills-subs" role="tab" aria-controls="v-pills-subs" aria-selected="false">subs</a>
+        <a class="nav-link" id="v-pills-pastas-tab" data-toggle="pill" href="#v-pills-pastas" role="tab" aria-controls="v-pills-pastas" aria-selected="false">pastas</a>
+        <a class="nav-link" id="v-pills-salads-tab" data-toggle="pill" href="#v-pills-salads" role="tab" aria-controls="v-pills-salads" aria-selected="false">salads</a>
+        <a class="nav-link" id="v-pills-platters-tab" data-toggle="pill" href="#v-pills-platters" role="tab" aria-controls="v-pills-platters" aria-selected="false">platters</a>
 
+
+      </div>
+    </div>
+    <div class="col-9">
+      <div class="tab-content" id="v-pills-tabContent">
+        <div class="tab-pane fade show active" id="v-pills-regular" role="tabpanel" aria-labelledby="v-pills-regular-tab">
+          <div class="row row-cols-4 no-gutters">
+            {% for reg_pizza in reg_pizzas %}
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Regular:{{reg_pizza.pizza.categories}}</h5>
+                    <div class="form-group">
+                      <select form="reg_pizza-{{reg_pizza.pk}}" class="form-control" name="price">
+                        <option value="{{reg_pizza.small}}">Small:{{reg_pizza.small}}</option>
+                        <option value="{{reg_pizza.large}}">Large:{{reg_pizza.large}}</option>
+                      </select>
                     </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
+                    <div class="form-group">
+                      <label for="quantity">Quantity: </label>
+                      <input form="reg_pizza-{{reg_pizza.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
                     </div>
+                    {% if reg_pizza.max_toppings != 0 %}
+                    <div class="form-group">
+                      <select form="reg_pizza-{{reg_pizza.pk}}" id="top_reg_pizza-{{reg_pizza.pk}}" class="form-control" name="toppings" multiple onchange="maxAllowedMultiselect(this, {{reg_pizza.max_toppings}})">
+                        {% for topping in toppings %}
+                        <option value="{{topping.pk}}">Topping:{{topping.topping}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    {% endif %}
+                    <form method="POST" id="reg_pizza-{{reg_pizza.pk}}">
+                    <button type="submit" class="btn btn-warning">Order</button>
+                    </form>
+                  </div>
                 </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Navs Sicilian Pizza-->
+        <div class="tab-pane fade" id="v-pills-sicilian" role="tabpanel" aria-labelledby="v-pills-sicilian-tab">
+          <div class="row row-cols-4 no-gutters">
+            {% for sici_pizza in sici_pizzas %}
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Sicilian:{{sici_pizza.pizza.categories}}</h5>
+                    <div class="form-group">
+                      <select form="sici_pizza-{{sici_pizza.pk}}" class="form-control" name="price">
+                        <option value="{{sici_pizza.small}}">Small:{{sici_pizza.small}}</option>
+                        <option value="{{sici_pizza.large}}">Large:{{sici_pizza.large}}</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="quantity">Quantity: </label>
+                      <input form="sici_pizza-{{sici_pizza.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
+                    </div>
+                    {% if sici_pizza.max_toppings != 0 %}
+                    <div class="form-group">
+                      <select form="sici_pizza-{{reg_pizza.pk}}" id="top_sici_pizza-{{sici_pizza.pk}}" class="form-control" name="toppings" multiple onchange="maxAllowedMultiselect(this, {{reg_pizza.max_toppings}})">
+                        {% for topping in toppings %}
+                        <option value="{{topping.pk}}">Topping:{{topping.topping}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    {% endif %}
+                    <form method="POST" id="sici_pizza-{{sici_pizza.pk}}">
+                    <button type="submit" class="btn btn-warning">Order</button>
+                    </form>
+                  </div>
                 </div>
             </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Navs Subs -->
+        <div class="tab-pane fade" id="v-pills-subs" role="tabpanel" aria-labelledby="v-pills-subs-tab">
+          <div class="row row-cols-4 no-gutters">
+            {% for subs in subs %}
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Subs:{{subs.subs}}</h5>
+                    <div class="form-group">
+                      <select form="subs-{{subs.pk}}" class="form-control" name="price">
+                        <option value="{{subs.small}}">Small:{{subs.small}}</option>
+                        <option value="{{subs.large}}">Large:{{subs.large}}</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="quantity">Quantity: </label>
+                      <input form="subs-{{subs.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
+                    </div>
+                    {% if subs.max_toppings != 0 %}
+                    <div class="form-group">
+                      <select form="subs-{{subs.pk}}" id="top_subs-{{subs.pk}}" class="form-control" name="toppings" multiple onchange="maxAllowedMultiselect(this, {{reg_pizza.max_toppings}})">
+                        {% for topping in toppings %}
+                        <option value="{{topping.pk}}">Topping:{{topping.topping}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    {% endif %}
+                    <form method="POST" id="subs-{{subs.pk}}">
+                    <button type="submit" class="btn btn-warning">Order</button>
+                    </form>
+                  </div>
+                </div>
             </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Navs Pastas-->
+        <div class="tab-pane fade" id="v-pills-pastas" role="tabpanel" aria-labelledby="v-pills-pastas-tab">
+          <div class="row row-cols-4 no-gutters">
+            {% for pastas in pastas %}
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Pastas:{{pastas.pastas}}</h5>
+                    <div class="form-group">
+                      <select form="pastas-{{pastas.pk}}" class="form-control" name="price">
+                        <option value="{{pastas}}">Pastas:{{pastas.pastas}}</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="quantity">Quantity: </label>
+                      <input form="pastas-{{pastas.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
+                    </div>
+                    <form method="POST" id="pastas-{{pastas.pk}}">
+                    <button type="submit" class="btn btn-warning">Order</button>
+                    </form>
+                  </div>
+                </div>
             </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Navs Salads-->
+       
+          <div class="tab-pane fade" id="v-pills-salads" role="tabpanel" aria-labelledby="v-pills-salads-tab">
+            <div class="row row-cols-4 no-gutters">
+              {% for salads in salads %}
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Salads:{{salads.salads}}</h5>
+                      <div class="form-group">
+                        <label for="quantity">Quantity: </label>
+                        <input form="salads-{{salads.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
+                      </div>
+                      <form method="POST" id="salads-{{salads.pk}}">
+                      <button type="submit" class="btn btn-warning">Order</button>
+                      </form>
+                    </div>
+                  </div>
+              </div>
+              {% endfor %}
             </div>
           </div>
+        
+
+        <!--Navs DinnerPlatters-->
+        <div class="tab-pane fade" id="v-pills-platters" role="tabpanel" aria-labelledby="v-pills-platters-tab">
+          <div class="row row-cols-4 no-gutters">
+            {% for platters in platters %}
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Dinner Platters:{{platters.platters}}</h5>
+                    <div class="form-group">
+                      <select form="platters-{{platters.pk}}" class="form-control" name="price">
+                        <option value="{{platters.small}}">Small:{{platters.small}}</option>
+                        <option value="{{platters.large}}">Large:{{platters.large}}</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="quantity">Quantity: </label>
+                      <input form="platters-{{platters.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
+                    </div>
+                    <form method="POST" id="platters-{{platters.pk}}">
+                    <button type="submit" class="btn btn-warning">Order</button>
+                    </form>
+                  </div>
+                </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+
       </div>
-      <div class="col">Column</div>
-      <div class="col">Column</div>
-      <div class="col">Column</div>
     </div>
   </div>
+</div>
+
 {% endblock %}

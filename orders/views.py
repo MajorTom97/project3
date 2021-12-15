@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib.auth.forms import UserCreationForm
@@ -8,90 +9,60 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from orders.models import RegularPizza, SicilianPizza, Toppings, Subs, Pastas, Salads, Extras, Category, DinnerPlatters
-from .forms import CreateUserForm
+from .forms import  UserRegisterForm
 
 # Create your views here.
 
-@login_required(login_url='signin')
+@login_required(login_url='login')
 def index(request):
     return render(request, "index.html")
 
-def singin(request):
-    if request.user.is_authenticated:
-        return redirect('index')
-    
-    else:
-        if request.method == "POST":
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-
-            user = authenticate(request, username=username, password=password)
-
-            if user is not None:
-                login(request, user)
-                return redirect('index')
-            else:
-                messages.info(request, 'Username or Password is incorrect!')
-        context = {}
-        return render (request, "signin.html", context)
-
-def signoutUser(request):
-    logout(request)
-    messages.success(request, 'Come back soon!')
-    return HttpResponse
 
 def register(request):
-    if request.user.is_authenticated:
-        return redirect('index')
-    else:
-        form = CreateUserForm()
-
-        if request.method == "POST":
-            form = CreateUserForm(request.POST)
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            return redirect('index')
+        else:
+            form = UserRegisterForm(request.POST)
             if form.is_valid():
                 form.save()
                 username = form.cleaned_data.get('username')
                 messages.success(request, f'User {username} successfully registered')
-                return redirect('signin')
+                return redirect('login')
+            else:
+                print(form.errors)
+                return redirect('register')
+    
+    form = UserRegisterForm()
+    context = {'form': form}
+    return render(request, "register.html", context)  
 
+# Categories 
 
-        context = {'form': form}
-        return render(request, "register.html", context)  
-
-def Category(request):
+def Menu(request):
     reg_pizza = RegularPizza.objects.all()
     sici_pizza = SicilianPizza.objects.all()
     toppings = Toppings.objects.all()
 
+    subs = Subs.objects.all()
+    extras = Extras.objects.all()
+
+    pasta = Pastas.objects.all()
+
+    salads = Salads.objects.all()
+
+    platters = DinnerPlatters.objects.all()
+
     context = {
-        "reg_pizzas":reg_pizza,
-        "sici_pizza": sici_pizza,
-        "toppinngs": toppings
+        "reg_pizzas":reg_pizza, #
+        "sici_pizzas": sici_pizza, #
+        "toppings": toppings,
+        "subs": subs, #
+        "extras": extras,
+        "pastas":pasta,
+        "salads":salads,
+        "platters":platters, #
+
     }
 
     return render(request,"menu.html", context)
-
-def subs(request):
-    subs = Subs.objects.all()
-    extras = Extras.objects.all()
-    context = {
-        "subs": subs,
-        "extras": extras
-    }
-
-    return render(request, "menu.html", context)
-
-def pasta(request):
-    pasta = Pastas.objects.all()
-    return render(request, "menu.html", {"pasta":pasta})
-
-def salads(request):
-    salads = Salads.objects.all()
-    return render (request, "menu.html", {"salads":salads})
-
-def dinnerPlatters(request):
-    platters = DinnerPlatters.objects.all()
-    context = {
-        "platters":platters
-    }
-    return render(request, "menu.html", context)
