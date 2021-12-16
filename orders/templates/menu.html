@@ -28,6 +28,8 @@ Menu
               <div class="card">
                   <div class="card-body">
                     <h5 class="card-title">Regular:{{reg_pizza.pizza.categories}}</h5>
+                    <input type="hidden" name="product" form="reg_pizza-{{reg_pizza.pk}}"
+                      value="Regular: {{reg_pizza.pizza.categories}}">
                     <div class="form-group">
                       <select form="reg_pizza-{{reg_pizza.pk}}" class="form-control" name="price">
                         <option value="{{reg_pizza.small}}">Small:{{reg_pizza.small}}</option>
@@ -48,6 +50,7 @@ Menu
                     </div>
                     {% endif %}
                     <form method="POST" id="reg_pizza-{{reg_pizza.pk}}">
+                      {% csrf_token %}
                     <button type="submit" class="btn btn-warning">Order</button>
                     </form>
                   </div>
@@ -65,6 +68,8 @@ Menu
               <div class="card">
                   <div class="card-body">
                     <h5 class="card-title">Sicilian:{{sici_pizza.pizza.categories}}</h5>
+                    <input type="hidden" name="product" form="sici_pizza-{{sici_pizza.pk}}"
+                      value="Sicilian: {{sici_pizza.pizza.categories}}">
                     <div class="form-group">
                       <select form="sici_pizza-{{sici_pizza.pk}}" class="form-control" name="price">
                         <option value="{{sici_pizza.small}}">Small:{{sici_pizza.small}}</option>
@@ -85,6 +90,7 @@ Menu
                     </div>
                     {% endif %}
                     <form method="POST" id="sici_pizza-{{sici_pizza.pk}}">
+                      {% csrf_token %}
                     <button type="submit" class="btn btn-warning">Order</button>
                     </form>
                   </div>
@@ -97,31 +103,34 @@ Menu
         <!-- Navs Subs -->
         <div class="tab-pane fade" id="v-pills-subs" role="tabpanel" aria-labelledby="v-pills-subs-tab">
           <div class="row row-cols-4 no-gutters">
-            {% for subs in subs %}
+            {% for sub in subs %}
             <div class="col-12 col-md-6 col-lg-4">
               <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Subs:{{subs.subs}}</h5>
+                    <h5 class="card-title">Subs:{{sub.sub}}</h5>
+                    <input type="hidden" name="product" form="subs-{{sub.pk}}"
+                      value="Subs: {{sub.sub}}">
                     <div class="form-group">
-                      <select form="subs-{{subs.pk}}" class="form-control" name="price">
-                        <option value="{{subs.small}}">Small:{{subs.small}}</option>
-                        <option value="{{subs.large}}">Large:{{subs.large}}</option>
+                      <select form="subs-{{sub.pk}}" class="form-control" name="price">
+                        <option value="{{sub.small}}">Small:{{sub.small}}</option>
+                        <option value="{{sub.large}}">Large:{{sub.large}}</option>
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="quantity">Quantity: </label>
-                      <input form="subs-{{subs.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
+                      <input form="subs-{{sub.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
                     </div>
                     {% if subs.max_toppings != 0 %}
                     <div class="form-group">
-                      <select form="subs-{{subs.pk}}" id="top_subs-{{subs.pk}}" class="form-control" name="toppings" multiple onchange="maxAllowedMultiselect(this, {{reg_pizza.max_toppings}})">
+                      <select form="subs-{{sub.pk}}" id="top_subs-{{sub.pk}}" class="form-control" name="toppings" multiple onchange="maxAllowedMultiselect(this, {{subs.max_toppings}})">
                         {% for topping in toppings %}
                         <option value="{{topping.pk}}">Topping:{{topping.topping}}</option>
                         {% endfor %}
                       </select>
                     </div>
                     {% endif %}
-                    <form method="POST" id="subs-{{subs.pk}}">
+                    <form method="POST" id="subs-{{sub.pk}}">
+                      {% csrf_token %}
                     <button type="submit" class="btn btn-warning">Order</button>
                     </form>
                   </div>
@@ -134,21 +143,24 @@ Menu
         <!-- Navs Pastas-->
         <div class="tab-pane fade" id="v-pills-pastas" role="tabpanel" aria-labelledby="v-pills-pastas-tab">
           <div class="row row-cols-4 no-gutters">
-            {% for pastas in pastas %}
+            {% for pasta in pastas %}
             <div class="col-12 col-md-6 col-lg-4">
               <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Pastas:{{pastas.pastas}}</h5>
+                    <h5 class="card-title">Pastas:{{pasta.pastas}}</h5>
+                    <input type="hidden" name="product" form="pastas-{{pasta.pk}}"
+                      value="Pastas: {{pasta.pastas}}">
                     <div class="form-group">
-                      <select form="pastas-{{pastas.pk}}" class="form-control" name="price">
-                        <option value="{{pastas}}">Pastas:{{pastas.pastas}}</option>
+                      <select disabled form="pastas-{{pasta.pk}}" class="form-control" name="price">
+                        <option selected value="{{pasta.price}}">Pastas:{{pasta.price}}</option>
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="quantity">Quantity: </label>
-                      <input form="pastas-{{pastas.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
+                      <input form="pastas-{{pasta.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
                     </div>
-                    <form method="POST" id="pastas-{{pastas.pk}}">
+                    <form method="POST" id="pastas-{{pasta.pk}}">
+                      {% csrf_token %}
                     <button type="submit" class="btn btn-warning">Order</button>
                     </form>
                   </div>
@@ -162,16 +174,24 @@ Menu
        
           <div class="tab-pane fade" id="v-pills-salads" role="tabpanel" aria-labelledby="v-pills-salads-tab">
             <div class="row row-cols-4 no-gutters">
-              {% for salads in salads %}
+              {% for salad in salads %}
               <div class="col-12 col-md-6 col-lg-4">
                 <div class="card">
                     <div class="card-body">
-                      <h5 class="card-title">Salads:{{salads.salads}}</h5>
+                      <h5 class="card-title">Salads: {{salad.salad}}</h5>
+                      <input type="hidden" name="product" form="salads-{{salad.pk}}"
+                      value="Salads: {{salad.salad}}">
+                      <div class="form-group">
+                        <select form="salads-{{salad.pk}}" class="form-control" name="price">
+                          <option value="{{salad.price}}">Salad:{{salad.price}}</option>
+                        </select>
+                      </div>
                       <div class="form-group">
                         <label for="quantity">Quantity: </label>
-                        <input form="salads-{{salads.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
+                        <input form="salads-{{salad.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
                       </div>
-                      <form method="POST" id="salads-{{salads.pk}}">
+                      <form method="POST" id="salads-{{salad.pk}}">
+                        {% csrf_token %}
                       <button type="submit" class="btn btn-warning">Order</button>
                       </form>
                     </div>
@@ -185,22 +205,25 @@ Menu
         <!--Navs DinnerPlatters-->
         <div class="tab-pane fade" id="v-pills-platters" role="tabpanel" aria-labelledby="v-pills-platters-tab">
           <div class="row row-cols-4 no-gutters">
-            {% for platters in platters %}
+            {% for row in platters %}
             <div class="col-12 col-md-6 col-lg-4">
               <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Dinner Platters:{{platters.platters}}</h5>
+                    <h5 class="card-title">Dinner Platters:{{row.dinner}}</h5>
+                    <input type="hidden" name="product" form="rows-{{row.pk}}"
+                      value="Dinner Platters: {{row.dinner}}">
                     <div class="form-group">
-                      <select form="platters-{{platters.pk}}" class="form-control" name="price">
-                        <option value="{{platters.small}}">Small:{{platters.small}}</option>
-                        <option value="{{platters.large}}">Large:{{platters.large}}</option>
+                      <select form="platters-{{row.pk}}" class="form-control" name="price">
+                        <option value="{{row.small}}">Small:{{row.small}}</option>
+                        <option value="{{row.large}}">Large:{{row.large}}</option>
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="quantity">Quantity: </label>
-                      <input form="platters-{{platters.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
+                      <input form="platters-{{row.pk}}" type="number" class="form-control" id="quantity" name="quantity" required>
                     </div>
-                    <form method="POST" id="platters-{{platters.pk}}">
+                    <form method="POST" id="platters-{{row.pk}}">
+                      {% csrf_token %}
                     <button type="submit" class="btn btn-warning">Order</button>
                     </form>
                   </div>

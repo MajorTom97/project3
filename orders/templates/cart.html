@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Cart 
+{% endblock %}
+
+{% block content %}
+
+{% for row in orders %}
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Product</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        <th scope="col">Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for detail in row.details.all %}
+      <tr>
+        <th scope="row">{{detail.product}}{% for topping in detail.toppings.all %}{{topping.toppings}}{% endfor %}</th>
+        
+        <td>{{detail.quantity}}</td>
+        <td>{{detail.price}}</td>
+        <td>{{detail.subtotal}}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+          <td>{% if row.pending %} <a class = "btn btn-success" href="{% url 'buy' %}">Buy Now</a> {% else %} Done! {% endif %}</td>
+          <td>Total:{{row.total}}</td>
+          <td>Customer:{{row.user.firstname}}{{row.user.lastname}}</td>
+      </tr>
+    </tbody>
+</table>
+{% endfor %}
+
+{% endblock %}
