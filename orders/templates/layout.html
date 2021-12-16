@@ -23,10 +23,10 @@
         <a class="nav-link" href="#"><i class="fa fa-home" aria-hidden="true"></i>Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fa fa-cutlery" aria-hidden="true"></i>Menu</a>
+        <a class="nav-link" href="{% url 'menu' %}"><i class="fa fa-cutlery" aria-hidden="true"></i>Menu</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fa fa-cart-plus" aria-hidden="true"></i>Add to Cart</a>
+        <a class="nav-link" href="{% url 'cart' %}"><i class="fa fa-cart-plus" aria-hidden="true"></i>Add to Cart</a>
       </li>
       {% if user.is_authenticated %}
       <li class="nav-item">
@@ -38,8 +38,8 @@
           {{username}}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Orders</a>
-          <a class="dropdown-item" href="#">Settings</a>
+          <a class="dropdown-item" href="{% url 'history' %}">Orders</a>
+          <a class="dropdown-item" href="{% url 'buy' %}">Buys</a>
           <span><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></span>
         </div>
       </li>
